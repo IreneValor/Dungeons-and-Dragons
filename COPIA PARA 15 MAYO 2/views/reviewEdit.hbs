@@ -1,0 +1,42 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Editar reseña</h1>
+    <main>
+      <form
+        action="/myExperiences/{{review.experienceId}}/reviews/{{review._id}}/edit"
+        method="POST"
+      >
+        <div>
+          <label for="title">Título:</label>
+          <input type="text" id="title" name="title" value={{review.title}}> </input>
+
+        </div>
+        <div>
+          <label for="comment">Comentario:</label>
+          <textarea
+            type="text"
+            id="comment"
+            name="comment"
+            rows="10"
+          >{{review.comment}}</textarea>
+        </div>
+        <div>
+          <label for="rating">Rating:</label>
+          <input
+            type="number"
+            id="rating"
+            name="rating"
+            value="{{review.rating}}"
+          ></input>
+        </div>
+        <div>
+
+          <button type="submit">Editar reseña</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

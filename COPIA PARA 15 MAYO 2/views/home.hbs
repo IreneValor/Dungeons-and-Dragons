@@ -1,0 +1,89 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Búsqueda de experiencias</title>
+  </head>
+  <body>
+    <header>
+      <h1>Búsqueda de experiencias</h1>
+    </header>
+    <main class="container-main">
+      <div class="columna">
+        <form action="/search" method="GET">
+          <div>
+            <label for="pais">País:</label>
+            <input type="text" id="pais" name="pais" />
+          </div>
+          <div>
+            <label for="ciudad">Ciudad:</label>
+            <input type="text" id="ciudad" name="ciudad" />
+          </div>
+          <div>
+            <label for="fecha_inicio">Fecha de inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" />
+          </div>
+          <div>
+            <label for="fecha_fin">Fecha de fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" />
+          </div>
+          <div>
+            <label>Filtros:</label>
+            <div>
+              <input
+                type="checkbox"
+                id="filtro_destacado"
+                name="filtro"
+                value="destacado"
+              />
+              <label for="filtro_destacado">Destacado</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="filtro_relax"
+                name="filtro"
+                value="relax"
+              />
+              <label for="filtro_relax">Relax</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="filtro_familia"
+                name="filtro"
+                value="familia"
+              />
+              <label for="filtro_familia">Familia</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="filtro_aventura"
+                name="filtro"
+                value="aventura"
+              />
+              <label for="filtro_aventura">Aventura</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="filtro_romantico"
+                name="filtro"
+                value="romantico"
+              />
+              <label for="filtro_romantico">Romántico</label>
+            </div>
+          </div>
+          <div>
+            <button type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+      <div class="columna-experience">
+        <form action="/myExperiences/new" method="GET">
+          <button type="submit">Añadir experiencia</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

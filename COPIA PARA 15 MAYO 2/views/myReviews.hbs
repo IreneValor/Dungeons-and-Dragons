@@ -1,0 +1,21 @@
+<h2>Reviews list</h2>
+hola
+<div>
+  {{#each reviews}}
+    <div style="border: solid 1px red">
+      {{title}}
+      {{rating}}
+      {{comment}}
+      {{location}}
+      <a href="/myReviews/{{_id}}">Mis reviews</a>
+    </div>
+  {{/each}}
+</div>
+
+{{!-- <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/books.service.js"></script>
+<script src="/js/books.js"></script>
+<script src="/js/list-map.js"></script>
+<script src="/js/chart.js"></script>--}}

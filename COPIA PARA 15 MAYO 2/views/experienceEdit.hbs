@@ -1,0 +1,53 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Editar experiencia</h1>
+    <main>
+      <form action="/myExperiences/{{experience.id}}/edit" method="POST">
+        <div>
+          <label for="titulo">Título:</label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            value={{experience.titulo}}
+          />
+
+        </div>
+        <div>
+          <label for="texto">Texto:</label>
+          <textarea
+            type="text"
+            id="texto"
+            name="texto"
+            rows="10"
+          >{{experience.texto}}</textarea>
+        </div>
+        <div>
+          <label for="imagen">Imágenes:</label>
+          <input
+            type="file"
+            id="imagen"
+            name="imagen"
+            accept="image/*"
+          />
+        </div>
+        <div>
+          <label for="filtro">Filtro:</label>
+          <select id="filtro" name="filtro" multiple>
+            <option value="pais">País</option>
+            <option value="ciudad">Ciudad</option>
+            <option value="naturaleza">Naturaleza</option>
+            <option value="ocio">Ocio</option>
+            <option value="precio">Precio</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit">Editar experiencia</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+<h1>Informacion</h1>
+<div class="details-user">
+  <h3>{{user.username}}</h3>
+  <h4>{{user.email}}</h4>
+  <img src="{{user.profileImg}}" alt="img" />
+  <h5>{{user.description}}</h5>
+</div>
+{{! // hay que poner studens , la ruta de inicio }}
+{{#if canEdit}}
+  <a href="/user/{{user._id}}/edit">Edit</a>
+{{/if}}
+{{#if canDelete}}
+  <a href="/user/{{user._id}}/delete">Delete</a>
+{{/if}}
+{{! // la propiedad es _id }}

@@ -1,0 +1,44 @@
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <img src="ruta_del_logo" alt="Logo" />
+    </div>
+    <div class="form-container">
+      <h1>Inicio de sesión</h1>
+      <hr />
+      <form action="/iniciar-sesion" method="POST">
+        <div class="mb-3">
+          <label for="emailInput" class="form-label">Dirección de email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="emailInput"
+            name="email"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="pwdInput" class="form-label">Contraseña</label>
+          <input
+            type="password"
+            class="form-control"
+            id="pwdInput"
+            name="userPwd"
+          />
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-dark block">Acceder</button>
+        </div>
+
+        {{#if errorMessage}}
+          <div id="errorMessage">
+            <p>{{errorMessage}}</p>
+          </div>
+        {{/if}}
+
+      </form>
+    </div>
+  </div>
+</body>
+<link rel="stylesheet" href="styles.css" />

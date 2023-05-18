@@ -1,0 +1,51 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nueva experiencia</title>
+  </head>
+  <body>
+    <header>
+      <h1>Nueva experiencia</h1>
+    </header>
+    <main>
+      <form
+        action="/myExperiences/new"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div>
+          <label for="titulo">Título:</label>
+          <input type="text" id="titulo" name="titulo" />
+        </div>
+        <div>
+          <label for="texto">Texto:</label>
+          <textarea type="text" id="texto" name="texto" rows="10"></textarea>
+        </div>
+        <div>
+          <label for="imagen">Imágenes:</label>
+          <input
+            {{! // para las imagenes que quieres subir a la nube// }}
+            type="file"
+            id="imagen"
+            name="imagen"
+            accept="image/*"
+            max="5"
+          />
+        </div>
+        <div>
+          <label for="filtro">Filtro:</label>
+          <select id="filtro" name="filtro" multiple>
+            <option value="pais">País</option>
+            <option value="ciudad">Ciudad</option>
+            <option value="naturaleza">Naturaleza</option>
+            <option value="ocio">Ocio</option>
+            <option value="precio">Precio</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit">Crear Experiencia</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

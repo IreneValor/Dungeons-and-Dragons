@@ -1,0 +1,94 @@
+<div class="container">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+      <h1>Actualización de datos</h1>
+      <hr />
+
+      <form action="/user/{{user._id}}/edit" method="POST">
+
+        <div class="mb-3 row">
+          <div class="col">
+            <label for="emailInput" class="form-label">Dirección de email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="emailInput"
+              name="email"
+              value="{{user.email}}"
+            />
+            <div class="form-text">Requerido.</div>
+          </div>
+          <div class="col">
+            <label for="pwdInput" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="pwdInput"
+              name="userPwd"
+            />
+            <div class="form-text">Requerido.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="usernameInput" class="form-label">Nombre de usuario</label>
+          <input
+            type="text"
+            class="form-control"
+            id="usernameInput"
+            name="username"
+            value="{{user.username}}"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="imageInput" class="form-label">Imagen</label>
+          <input
+            type="url"
+            class="form-control"
+            id="imageInput"
+            name="profileImg"
+            value="{{user.profileImg}}"
+          />
+          <div class="form-text">Introduce la URL a la imagen que desees de
+            perfil.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="descriptionInput" class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            id="descriptionInput"
+            rows="3"
+            name="description"
+          >{{user.description}}</textarea>
+        </div>
+        {{#if canEdit}}
+          <div class="mb-3">
+            <label for="roleInput" class="form-label">Role:</label>
+            <select name="role">
+              <option value="USER">User</option>
+              <option value="DEV">Dev</option>
+              <option value="TA">TA</option>
+            </select>
+          </div>
+        {{/if}}
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-dark block">Actualizar registro</button>
+        </div>
+
+        {{#if errorMessage}}
+          <div id="errorMessage">
+            <p>{{errorMessage}}</p>
+          </div>
+        {{/if}}
+
+      </form>
+    </div>
+  </div>
+
+</div>

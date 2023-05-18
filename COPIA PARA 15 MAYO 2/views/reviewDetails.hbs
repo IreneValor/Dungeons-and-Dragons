@@ -1,0 +1,24 @@
+<h1>Detalles de la reseña</h1>
+{{!-- <h3>{{review._id}}</h3>
+<h3>{{review.userId}}</h3>
+<h4>{{review.experienceId}}</h4> --}}
+<div class="container-detailsReviews">
+  <h5>{{review.title}}</h5>
+  <h5>{{review.comment}}</h5>
+  <h5>{{review.rating}}</h5>
+  <img src="{{review.imagen}}" alt="" />
+  <h5>{{review.createdAt}}</h5>
+</div>
+<div class="buttons-reviews"></div>
+<form
+  action="/myExperiences/{{review.experienceId}}/reviews/{{review._id}}/delete"
+  method="POST"
+>
+  <button type="submit">borrar</button>
+</form>
+<form
+  action="/myExperiences/{{review.experienceId}}/reviews/{{review._id}}/edit"
+  method="GET"
+>
+  <button type="submit">editar</button>
+</form>
