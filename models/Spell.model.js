@@ -69,6 +69,10 @@ const spellSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  done: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Spell = model("Spell", spellSchema);
