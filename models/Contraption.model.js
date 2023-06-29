@@ -1,4 +1,5 @@
-const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
+const { Schema, model } = mongoose;
 const Character = require("./Character.model");
 
 const contraptionSchema = new Schema(
@@ -19,8 +20,9 @@ const contraptionSchema = new Schema(
       default: false,
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   },
   {

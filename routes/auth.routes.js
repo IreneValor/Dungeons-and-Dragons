@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 // const User = require("./../models/User.model");
 const { isAuthenticated } = require("../middlewares/Token.middleware");
-const User = require("../models/User.Model");
+const User = require("../models/User.model")
 const saltRounds = 10;
 
 router.post("/signup", (req, res, next) => {

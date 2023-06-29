@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
 const mongoose = require("mongoose");
+const { Schema, model } = mongoose;
 const Spell = require("./Spell.model");
 const Contraption = require("./Contraption.model");
 
@@ -41,8 +41,9 @@ const characterSchema = new Schema({
   },
 
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   spellbook: [
     //AQUI LO RELACIONO CON EL MODELO HECHIZO
