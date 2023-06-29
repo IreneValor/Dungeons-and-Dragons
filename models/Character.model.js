@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const mongoose = require("mongoose");
 const Spell = require("./Spell.model");
-// const Constraption = require("./Constraption.model");
+const Contraption = require("./Contraption.model");
 
 const characterSchema = new Schema({
   name: {
@@ -62,7 +62,7 @@ const characterSchema = new Schema({
     //AQUI LO RELACIONO CON EL MODELO ARTILUGIOS
     {
       type: Schema.Types.ObjectId,
-      ref: "Constraption",
+      ref: "Contraption",
     },
   ],
 });

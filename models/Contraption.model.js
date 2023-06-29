@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-// const Character = require("./Character.model");
+const Character = require("./Character.model");
 
 const contraptionSchema = new Schema(
   {
