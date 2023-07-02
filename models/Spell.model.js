@@ -4,8 +4,7 @@ const { Character } = require("./Character.model");
 
 const spellSchema = new Schema({
   index: {
-    //siempre debe hacer un index, que suele coincidir con el nombre, sino es NULL y al crear un nuevo hechizo da error al estar duplicado en mongo. Al editarlo. Tambien es necesario modificar ese index.
-    type: String,
+   type: String,
     unique: false,
   },
   name: {
@@ -53,11 +52,7 @@ const spellSchema = new Schema({
       url: String,
     },
   ],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+
   url: String,
   characters: [
     {

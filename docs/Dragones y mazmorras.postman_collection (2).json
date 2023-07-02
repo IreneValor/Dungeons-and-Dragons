@@ -1,0 +1,761 @@
+{
+	"info": {
+		"_postman_id": "a6ae40bb-4f3d-4a67-b2e6-d2ae43cf8bd3",
+		"name": "Dragones y mazmorras",
+		"description": "Dragones y mazmorras",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27919460"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "SIGNUP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"ejemplo10@example.com\",\n  \"password\": \"contraseña123\",\n  \"username\": \"ejemplo1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5005/api/auth/signup/"
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"ejemplo2@example.com\",\n  \"password\": \"contraseña123\",\n  \"username\": \"ejemplo1\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5005/api/auth/signup/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SPELLS",
+			"item": [
+				{
+					"name": "LISTA HECHIZOS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Bless\",\n  \"desc\": [\"Blesses up to three creatures of your choice within range. Whenever a target makes an attack roll or a saving throw before the spell ends, the target can roll a d4 and add the number rolled to the attack roll or saving throw.\"],\n  \"level\": 1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5005/api/spells"
+					},
+					"response": []
+				},
+				{
+					"name": "DETALLE HECHIZO",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/spells/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"spells",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "649d9863e36b030c9e0f5b43"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREAR HECHIZO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Hechizo prueba2\",\n  \"index\": \"hechizo prueba2\",\n  \"level\": 5,\n  \"school\": \"Conjuración\",\n  \"description\": \"Creas un círculo mágico en el suelo que permite la teletransportación de personas y objetos a otros círculos de teletransportación.\",\n  \"range\": \"10 pies\",\n  \"components\": [\"verbal\", \"somatic\", \"material\"],\n  \"material\": \"Una inscripción de plata en polvo con un valor de 50 gp\",\n  \"user\": \"649d96fe9fd61fa2352ae38d\"\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5005/api/spells"
+					},
+					"response": []
+				},
+				{
+					"name": "EDITAR",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"index\": \"healing-touch\",\n  \"name\": \"Healing Touch\",\n  \"desc\": [\n    \"A creature you touch regains a number of hit points equal to 1d8 + your spellcasting ability modifier.\"\n  ],\n  \"level\": 1,\n  \"classes\": [\n    {\n      \"index\": \"cleric\",\n      \"name\": \"Cleric\",\n      \"url\": \"https://www.example.com/classes/cleric\",\n      \"_id\": \"649d730f794816da2173e93f\"\n    },\n    {\n      \"index\": \"bard\",\n      \"name\": \"Bard\",\n      \"url\": \"https://www.example.com/classes/bard\",\n      \"_id\": \"649d730f794816da2173e940\"\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/spells?id=649d730f794816da2173e940",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"spells"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "649d730f794816da2173e940"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BORRAR HECHIZO",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/api/spells/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"spells",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "649d7235103c5492271a1c7f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CHARACTER",
+			"item": [
+				{
+					"name": "LISTA PERSONAJES",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "http://localhost:5005/api/characters"
+					},
+					"response": []
+				},
+				{
+					"name": "DETALLE PERSONAJE",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/?id=649c65152f742998dc0cd5b4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "649c65152f742998dc0cd5b4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREAR PERSONAJE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NUevooCON-SPE\",\n  \"classs\": \"elf\",\n  \"level\": 4,\n  \"spellbook\": [\"64975baa5f503ce7ee88ca18\", \"649d7920e1ac0ca9f57aebc4\"],\n  \"contraptions\": [\"649d730f794816da2173e93e\",\"649d75ab794816da2173e965\"]\n}\n\n\n\n\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5005/api/characters"
+					},
+					"response": []
+				},
+				{
+					"name": "EDITAR PERSONAJE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"EDITADO\",\n    \"class\": \"human\",\n    \"level\": 6,\n    \"spellbook\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":id"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "EDITADO",
+									"disabled": true
+								},
+								{
+									"key": "class",
+									"value": "druid",
+									"disabled": true
+								},
+								{
+									"key": "level",
+									"value": "1",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "649c26285ade8ea77ea39bb7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BORRAR PERSONAJE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "649c3d1134c60fcf52b27be0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREAR CONTRAPTION CHARACTER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contraptionId\": \"64a05ac38cddb22cba3e5155\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:characterId/addContraption",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":characterId",
+								"addContraption"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "64a059855792a095752f0eee"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FALLA ELIMINAR CONTRAPTION CHARACTER",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:characterId/removeContraption/:contraptionId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":characterId",
+								"removeContraption",
+								":contraptionId"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "64a1630b54e29599879f84d1"
+								},
+								{
+									"key": "contraptionId",
+									"value": "64a05abd8cddb22cba3e5153"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREAR SPELL CHARACTER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"spellId\": \"64a05bba8cddb22cba3e5171\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:characterId/addSpell",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":characterId",
+								"addSpell"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "64a1624154e29599879f84bd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ELIMINAR SPELL CHARACTER",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:characterId/removeSpell/:spellId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":characterId",
+								"removeSpell",
+								":spellId"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "64a1624154e29599879f84bd"
+								},
+								{
+									"key": "spellId",
+									"value": "64a05bba8cddb22cba3e5171"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FAVORITOS Y CREADOS CHARACTER",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:personajeId/favorites",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":personajeId",
+								"favorites"
+							],
+							"variable": [
+								{
+									"key": "personajeId",
+									"value": "64a059855792a095752f0eee"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MARCAR HECHIZO COMO FAVORITO Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:characterId/favoriteSpell/:spellId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":characterId",
+								"favoriteSpell",
+								":spellId"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "64a059855792a095752f0eee"
+								},
+								{
+									"key": "spellId",
+									"value": "64a05bb58cddb22cba3e516f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FALLA DESMARCAR HECHIZO COMO FAVORITO Copy 2",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/characters/:characterId/favoriteSpell/:spellId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"characters",
+								":characterId",
+								"favoriteSpell",
+								":spellId"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "64a059855792a095752f0eee"
+								},
+								{
+									"key": "spellId",
+									"value": "64a05bb58cddb22cba3e516f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EQUIPAMIENTO",
+			"item": [
+				{
+					"name": "LISTA CONTRAPTIONS",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "DETALLES CONTRAPTION",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "CREAR CONTRAPTION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Contraption Example\",\n  \"description\": \"This is an example contraption\",\n  \"quantity\": 10,\n  \"done\": false,\n  \"user\": \"649d96fe9fd61fa2352ae38d\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/contraptions/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"contraptions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDITAR CONTRAPTION",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"EDITADO BOTAS CUERO\",\n  \"description\": \"Nueva descripción del contraption\",\n  \"quantity\": 10,\n  \"done\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/contraptions/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"contraptions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "64a05ab28cddb22cba3e5151"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BORRAR CONTRAPTION",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"EDITADO BOTAS CUERO\",\n  \"description\": \"Nueva descripción del contraption\",\n  \"quantity\": 10,\n  \"done\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/api/contraptions/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"contraptions",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "649d7949e1ac0ca9f57aebc7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDlkNzZjMTc5NDgxNmRhMjE3M2U5NzMiLCJlbWFpbCI6ImVqZW1wbG8yQGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJlamVtcGxvMSIsImlhdCI6MTY4ODIwNTUwNCwiZXhwIjoxNjg4MjI3MTA0fQ.m23AC3PyP7YcbObyrC56dLlHvGTBR87GUdYa6fe4K0s"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
