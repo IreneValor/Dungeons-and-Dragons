@@ -1,23 +1,51 @@
 const router = require("express").Router();
 const Spell = require("../models/Spell.model");
 const Character = require("../models/Character.model");
+const axios = require("axios");
 
-// Traer todos los hechizos con  paginacion
+// Traer todos los hechizos con paginación
 router.get("/", async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1; // Página actual
     const limit = parseInt(req.query.limit) || 10; // Cantidad de elementos por página
 
-    const spells = await Spell.find()
+    // Obtener los hechizos creados por el cliente
+    const clientSpells = await Spell.find()
       .skip((page - 1) * limit)
       .limit(limit)
       .populate("characters");
 
-    return res.status(200).json(spells);
+    // Obtener los hechizos de la API externa
+    const apiResponse = await axios.get(
+      `https://www.dnd5eapi.co/api/spells?classes=wizard` // Modifica esta URL según tus necesidades
+    );
+    const apiSpells = apiResponse.data.results;
+
+    // Combinar los hechizos creados por el cliente y los de la API en un solo arreglo
+    const allSpells = [...clientSpells, ...apiSpells];
+
+    return res.status(200).json(allSpells);
   } catch (error) {
     next(error);
   }
 });
+
+// // Traer todos los hechizos con  paginacion//ANTES DE PONER LA API EXTERNA
+// router.get("/", async (req, res, next) => {
+//   try {
+//     const page = parseInt(req.query.page) || 1; // Página actual
+//     const limit = parseInt(req.query.limit) || 10; // Cantidad de elementos por página
+
+//     const spells = await Spell.find()
+//       .skip((page - 1) * limit)
+//       .limit(limit)
+//       .populate("characters");
+
+//     return res.status(200).json(spells);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // Obtener un hechizo por ID
 router.get("/:id", async (req, res, next) => {
@@ -68,6 +96,3 @@ router.delete("/:id", async (req, res, next) => {
 });
 
 module.exports = router;
-
-
-

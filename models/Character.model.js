@@ -57,9 +57,12 @@ const characterSchema = new Schema({
       ref: "Contraption",
     },
   ],
+  image: {
+    type: String,
+    default: null,
+  },
 });
 
 const Character = model("Character", characterSchema);
 
 module.exports = Character;
-

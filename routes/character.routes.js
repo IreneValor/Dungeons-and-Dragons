@@ -7,7 +7,8 @@ const Spell = require("../models/Spell.model");
 // TRAER TODOS LOS PERSONAJES
 router.get("/", async (req, res) => {
   try {
-    const characters = await Character.find();
+    const { userId } = req.query; //LO NECESITO PARA QUE APAREZCAN EN LA HOME SOLO ESOS
+    const characters = await Character.find({ user: userId });
     return res.status(200).json(characters);
   } catch (error) {
     return res.status(500).json({ error: "Error al obtener los personajes" });
@@ -43,6 +44,7 @@ router.post("/", async (req, res) => {
       classs,
       contraptions: contraptions || [],
       "spellbook.spells": spells || [],
+      image: "../img/profile.jpeg",
     });
 
     await character.save();
@@ -172,43 +174,64 @@ router.delete(
   }
 );
 
-
 // ELIMINAR CONTRAPTION DE UN PERSONAJE
-router.delete(
-  "/:characterId/removeContraption/:contraptionId",
-  async (req, res) => {
-    try {
-      const { characterId, contraptionId } = req.params;
+// router.delete(
+//   "/:characterId/removeContraption/:contraptionId",
+//   async (req, res) => {
+//     try {
+//       const { characterId, contraptionId } = req.params;
 
-      const character = await Character.findById(characterId);
-      if (!character) {
-        return res.status(404).json({ message: "Personaje no encontrado" });
-      }
+//       const character = await Character.findById(characterId);
+//       if (!character) {
+//         return res.status(404).json({ message: "Personaje no encontrado" });
+//       }
 
-      const contraption = await Contraption.findById(contraptionId);
-      if (!contraption) {
-        return res.status(404).json({ message: "Contraption no encontrado" });
-      }
+//       const contraption = await Contraption.findById(contraptionId);
+//       if (!contraption) {
+//         return res.status(404).json({ message: "Contraption no encontrado" });
+//       }
 
-      if (!character.contraptions.includes(contraptionId)) {
-        return res
-          .status(400)
-          .json({ message: "El contraption no pertenece al personaje" });
-      }
+//       if (!character.contraptions.includes(contraptionId)) {
+//         return res
+//           .status(400)
+//           .json({ message: "El contraption no pertenece al personaje" });
+//       }
 
-      character.contraptions = character.contraptions.filter(
-        (id) => id !== contraptionId
-      );
-      await character.save();
+//       character.contraptions = character.contraptions.filter(
+//         (id) => id !== contraptionId
+//       );
+//       await character.save();
 
-      return res.status(200).json(character);
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: "Error al eliminar el contraption del personaje" });
+//       return res.status(200).json(character);
+//     } catch (error) {
+//       return res
+//         .status(500)
+//         .json({ error: "Error al eliminar el contraption del personaje" });
+//     }
+//   }
+// );
+// OBTENER HECHIZOS API EXTARNA SEGUN NIVEL Y RAZA
+router.get("/:characterId/spells", async (req, res, next) => {
+  try {
+    const { characterId } = req.params;
+    const character = await Character.findById(characterId);
+
+    if (!character) {
+      return res.status(404).json({ message: "Personaje no encontrado" });
     }
+
+    const { classs, level } = character;
+
+    const response = await axios.get(
+      `https://www.dnd5eapi.co/api/spells?classes=${classs}&level=${level}`
+    );
+
+    const spells = response.data.results;
+    return res.status(200).json(spells);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 
 // AÑADIR SPELL AL SPELLBOOK DE UN PERSONAJE
@@ -267,7 +290,7 @@ router.delete("/:characterId/removeSpell/:spellId", async (req, res) => {
   }
 });
 
-
+// ...ESTO ES LO NUEVO SIN COMPROBAR. TEMA FAVORITO...TRAER SOLO CREADOS Y FAVORITOS EN LA FICHA DE PERSONAJE.
 
 // TRAER FAVORITOS Y CREACIONES DEL PERSONAJE
 router.get("/:id/favorites", async (req, res) => {
