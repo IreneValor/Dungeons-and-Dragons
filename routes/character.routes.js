@@ -1,11 +1,14 @@
+
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 const Character = require("../models/Character.model");
 const Contraption = require("../models/Contraption.model");
 const Spell = require("../models/Spell.model");
+const { isAuthenticated } = require("../middlewares/Token.middleware");
 
 // TRAER TODOS LOS PERSONAJES
-router.get("/", async (req, res) => {
+router.get("/", isAuthenticated, async (req, res) => {
   try {
     const { userId } = req.query; //LO NECESITO PARA QUE APAREZCAN EN LA HOME SOLO ESOS
     const characters = await Character.find({ user: userId });
@@ -16,7 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 // TRAER PERSONAJE POR ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
     const character = await Character.findById(id)
@@ -34,7 +37,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // CREAR NUEVO PERSONAJE (CON USER)
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
   try {
     const { name, userId, level, classs, contraptions, spells } = req.body;
     const character = new Character({
@@ -55,7 +58,7 @@ router.post("/", async (req, res) => {
 });
 
 // ACTUALIZAR PERSONAJE (CONTRAPTIONS Y SPELLS) POR ID
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, contraptions, spells } = req.body;
@@ -91,7 +94,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // ELIMINAR EL PERSONAJE POR ID
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -110,34 +113,39 @@ router.delete("/:id", async (req, res) => {
 });
 
 // AÑADIR CONTRAPTION A UN PERSONAJE
-router.post("/:characterId/addContraption", async (req, res) => {
-  try {
-    const { characterId } = req.params;
-    const { contraptionId } = req.body;
+router.post(
+  "/:characterId/addContraption",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const { characterId } = req.params;
+      const { contraptionId } = req.body;
 
-    const character = await Character.findById(characterId);
-    if (!character) {
-      return res.status(404).json({ message: "Personaje no encontrado" });
+      const character = await Character.findById(characterId);
+      if (!character) {
+        return res.status(404).json({ message: "Personaje no encontrado" });
+      }
+
+      const contraption = await Contraption.findById(contraptionId);
+      if (!contraption) {
+        return res.status(404).json({ message: "Contraption no encontrado" });
+      }
+
+      character.contraptions.push(contraptionId);
+      await character.save();
+
+      return res.status(200).json(character);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error al añadir el contraption al personaje" });
     }
-
-    const contraption = await Contraption.findById(contraptionId);
-    if (!contraption) {
-      return res.status(404).json({ message: "Contraption no encontrado" });
-    }
-
-    character.contraptions.push(contraptionId);
-    await character.save();
-
-    return res.status(200).json(character);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "Error al añadir el contraption al personaje" });
   }
-});
+);
 // ELIMINAR CONTRAPTION DE UN PERSONAJE
 router.delete(
   "/:characterId/removeContraption/:contraptionId",
+  isAuthenticated,
   async (req, res) => {
     try {
       const { characterId, contraptionId } = req.params;
@@ -211,7 +219,7 @@ router.delete(
 //   }
 // );
 // OBTENER HECHIZOS API EXTARNA SEGUN NIVEL Y RAZA
-router.get("/:characterId/spells", async (req, res, next) => {
+router.get("/:characterId/spells", isAuthenticated, async (req, res, next) => {
   try {
     const { characterId } = req.params;
     const character = await Character.findById(characterId);
@@ -233,9 +241,8 @@ router.get("/:characterId/spells", async (req, res, next) => {
   }
 });
 
-
 // AÑADIR SPELL AL SPELLBOOK DE UN PERSONAJE
-router.post("/:characterId/addSpell", async (req, res) => {
+router.post("/:characterId/addSpell", isAuthenticated, async (req, res) => {
   try {
     const { characterId } = req.params;
     const { spellId } = req.body;
@@ -268,32 +275,36 @@ router.post("/:characterId/addSpell", async (req, res) => {
 
 // ELIMINAR SPELL DEL SPELLBOOK DE UN PERSONAJE
 
-router.delete("/:characterId/removeSpell/:spellId", async (req, res) => {
-  try {
-    const { characterId, spellId } = req.params;
+router.delete(
+  "/:characterId/removeSpell/:spellId",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const { characterId, spellId } = req.params;
 
-    const character = await Character.findByIdAndUpdate(
-      characterId,
-      { $pull: { spellbook: { spell: spellId } } },
-      { new: true }
-    );
+      const character = await Character.findByIdAndUpdate(
+        characterId,
+        { $pull: { spellbook: { spell: spellId } } },
+        { new: true }
+      );
 
-    if (!character) {
-      return res.status(404).json({ message: "Personaje no encontrado" });
+      if (!character) {
+        return res.status(404).json({ message: "Personaje no encontrado" });
+      }
+
+      return res.status(200).json({ message: "SPELL DEL SPELLBOOK BORRADO" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error al eliminar el hechizo del personaje" });
     }
-
-    return res.status(200).json({ message: "SPELL DEL SPELLBOOK BORRADO" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "Error al eliminar el hechizo del personaje" });
   }
-});
+);
 
 // ...ESTO ES LO NUEVO SIN COMPROBAR. TEMA FAVORITO...TRAER SOLO CREADOS Y FAVORITOS EN LA FICHA DE PERSONAJE.
 
 // TRAER FAVORITOS Y CREACIONES DEL PERSONAJE
-router.get("/:id/favorites", async (req, res) => {
+router.get("/:id/favorites", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
     const character = await Character.findById(id)
@@ -316,64 +327,72 @@ router.get("/:id/favorites", async (req, res) => {
 });
 
 // MARCAR HECHIZO COMO FAVORITO
-router.put("/:characterId/favoriteSpell/:spellId", async (req, res) => {
-  try {
-    const { characterId, spellId } = req.params;
+router.put(
+  "/:characterId/favoriteSpell/:spellId",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const { characterId, spellId } = req.params;
 
-    const character = await Character.findById(characterId);
-    if (!character) {
-      return res.status(404).json({ message: "Personaje no encontrado" });
+      const character = await Character.findById(characterId);
+      if (!character) {
+        return res.status(404).json({ message: "Personaje no encontrado" });
+      }
+
+      const spellIndex = character.spellbook.findIndex(
+        (spell) => spell.spell.toString() === spellId
+      );
+      if (spellIndex === -1) {
+        return res.status(404).json({
+          message: "Hechizo no encontrado en el spellbook del personaje",
+        });
+      }
+
+      character.spellbook[spellIndex].isFavorite = true;
+      await character.save();
+
+      return res.status(200).json(character);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error al marcar el hechizo como favorito" });
     }
-
-    const spellIndex = character.spellbook.findIndex(
-      (spell) => spell.spell.toString() === spellId
-    );
-    if (spellIndex === -1) {
-      return res.status(404).json({
-        message: "Hechizo no encontrado en el spellbook del personaje",
-      });
-    }
-
-    character.spellbook[spellIndex].isFavorite = true;
-    await character.save();
-
-    return res.status(200).json(character);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "Error al marcar el hechizo como favorito" });
   }
-});
+);
 
 // DESMARCAR HECHIZO COMO FAVORITO
-router.put("/:characterId/unfavoriteSpell/:spellId", async (req, res) => {
-  try {
-    const { characterId, spellId } = req.params;
+router.put(
+  "/:characterId/unfavoriteSpell/:spellId",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const { characterId, spellId } = req.params;
 
-    const character = await Character.findById(characterId);
-    if (!character) {
-      return res.status(404).json({ message: "Personaje no encontrado" });
+      const character = await Character.findById(characterId);
+      if (!character) {
+        return res.status(404).json({ message: "Personaje no encontrado" });
+      }
+
+      const spellIndex = character.spellbook.findIndex(
+        (spell) => spell.spell.toString() === spellId
+      );
+      if (spellIndex === -1) {
+        return res.status(404).json({
+          message: "Hechizo no encontrado en el spellbook del personaje",
+        });
+      }
+
+      character.spellbook[spellIndex].isFavorite = false;
+      await character.save();
+
+      return res.status(200).json(character);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error al desmarcar el hechizo como favorito" });
     }
-
-    const spellIndex = character.spellbook.findIndex(
-      (spell) => spell.spell.toString() === spellId
-    );
-    if (spellIndex === -1) {
-      return res.status(404).json({
-        message: "Hechizo no encontrado en el spellbook del personaje",
-      });
-    }
-
-    character.spellbook[spellIndex].isFavorite = false;
-    await character.save();
-
-    return res.status(200).json(character);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "Error al desmarcar el hechizo como favorito" });
   }
-});
+);
 
 // ...
 

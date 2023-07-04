@@ -4,7 +4,7 @@ const { Character } = require("./Character.model");
 
 const spellSchema = new Schema({
   index: {
-   type: String,
+    type: String,
     unique: false,
   },
   name: {
@@ -67,6 +67,11 @@ const spellSchema = new Schema({
   done: {
     type: Boolean,
     default: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
 });
 
