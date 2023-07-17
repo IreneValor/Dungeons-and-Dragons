@@ -1,6 +1,5 @@
 require("dotenv").config();
-require("./db"); // REQUIERO MONGO
-//const { isAuthenticated } = require("./middlewares/Token.middleware");
+require("./db");
 
 const express = require("express");
 const app = express();

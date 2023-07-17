@@ -1,47 +1,47 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
-
-
-// const User = require("./../models/User.model");
 const { isAuthenticated } = require("../middlewares/Token.middleware");
-const User = require("../models/User.model")
+const User = require("../models/User.model");
+
 const saltRounds = 10;
 
-router.post("/signup", (req, res, next) => {
-  const { email, password, username } = req.body;
-  //conprobar los datos, longuitud , campos rellenos...
-  if (password.length < 2) {
-    // o if(email ===''||password ===''||name==='')
-    res
-      .status(400)
-      .json({ message: "Password must have at least 2 characters" }); //message: "provide email, password and name"
-    return;
-  }
+router.post("/signup", async (req, res, next) => {
+  try {
+    const { email, password, username } = req.body;
 
-  User.findOne({ email })
-    .then((foundUser) => {
-      if (foundUser) {
-        res.status(400).json({ message: "User already exists." });
-        return;
-      }
+    if (password.length < 2) {
+      res
+        .status(400)
+        .json({ message: "Password must have at least 2 characters" });
+      return;
+    }
 
-      const salt = bcrypt.genSaltSync(saltRounds);
-      const hashedPassword = bcrypt.hashSync(password, salt);
+    const foundUser = await User.findOne({ email });
 
-      return User.create({ email, password: hashedPassword, username });
-    })
-    .then((createdUser) => {
-      const { email, username, _id } = createdUser;
-      const user = { email, username, _id };
+    if (foundUser) {
+      res.status(400).json({ message: "User already exists." });
+      return;
+    }
 
-      res.status(201).json({ user });
-    })
-    .catch((err) => {
-      next(err);
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
+    const createdUser = await User.create({
+      email,
+      password: hashedPassword,
+      username,
     });
+
+    const { _id } = createdUser;
+    const user = { email, username, _id };
+
+    res.status(201).json({ user });
+  } catch (error) {
+    next(error);
+  }
 });
+
 
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
@@ -83,5 +83,30 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
 
   res.status(200).json(req.payload);
 });
+
+router.get("/:userId", isAuthenticated, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const User = await User.find({}).populate("characters");
+
+    {
+    }
+    console.log(userId);
+    return res.status(200).json(characters);
+  } catch (error) {
+    return res.status(500).json({ error: "Error al obtener los personajes" });
+  }
+});
+
+// router.get("/characters", isAuthenticated, async (req, res, next) => {
+//   try {
+//     const { userId } = req.body;
+//     const characters = await Character.find({ user: userId });
+//     return res.status(200).json(characters);
+//   } catch (error) {
+//     return res.status(500).json({ error: "Error al obtener los personajes" });
+//   }
+// });
 
 module.exports = router;

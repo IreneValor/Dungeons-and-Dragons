@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 const Spell = require("./Spell.model");
 const Contraption = require("./Contraption.model");
+const User = require("./User.model");
 
 const characterSchema = new Schema({
   name: {
@@ -13,7 +14,17 @@ const characterSchema = new Schema({
   },
   classs: {
     type: String,
+
+  },
+  level: {
+    type: Number,
     required: true,
+  },
+  background: {
+    type: String,
+  },
+  alignment: {
+    type: String,
   },
   abilityScores: {
     strength: {
@@ -34,10 +45,6 @@ const characterSchema = new Schema({
     charisma: {
       type: Number,
     },
-  },
-  level: {
-    type: Number,
-    required: true,
   },
   spellbook: [
     {
@@ -61,8 +68,11 @@ const characterSchema = new Schema({
     type: String,
     default: null,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
-const Character = model("Character", characterSchema);
-
-module.exports = Character;
+module.exports = model("Character", characterSchema);

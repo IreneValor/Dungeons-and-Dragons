@@ -9,6 +9,9 @@ const contraptionSchema = new Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+    },
     description: {
       type: String,
       maxLength: 250,
@@ -16,14 +19,14 @@ const contraptionSchema = new Schema(
     quantity: {
       type: Number,
     },
+
     done: {
       type: Boolean,
       default: false,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    isFavorite: {
+      type: Boolean,
+      default: false,
     },
     characters: [
       {

@@ -1,4 +1,16 @@
 const { expressjwt } = require("express-jwt");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); //carpeta Cloudinary
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const isAuthenticated = expressjwt({
   secret: process.env.TOKEN_SECRET,
@@ -20,31 +32,18 @@ function getTokenFromHeaders(req) {
   return null;
 }
 
-module.exports = { isAuthenticated };
-// const isLoggedIn = (req, res, next) => {
-//   if (req.session.currentUser) {
-//     next();
-//   } else {
-//     res.render("auth/login", { errorMessage: "Debes iniciar sesión" });
-//   }
-// };
+const uploadMiddleware = upload.single("image");
+module.exports = { isAuthenticated, uploadMiddleware };
 
-// const logOutUser = (req, res, next) => {
-//   req.session.destroy((err) => {
-//     if (err) {
-//       next(err);
-//     } else {
-//       res.redirect("/login");
-//     }
-//   });
-// };
+// module.exports = { isAuthenticated, uploadMiddleware };
 // const { expressjwt } = require("express-jwt");
+// const multer = require("multer");
 
 // const isAuthenticated = expressjwt({
 //   secret: process.env.TOKEN_SECRET,
 //   algorithms: ["HS256"],
 //   requestProperty: "payload",
-//   getToken: getTokenFromHeaders
+//   getToken: getTokenFromHeaders,
 // });
 
 // function getTokenFromHeaders(req) {
@@ -59,5 +58,5 @@ module.exports = { isAuthenticated };
 
 //   return null;
 // }
-// module.exports = { isAuthenticated };
 
+// module.exports = { isAuthenticated };
