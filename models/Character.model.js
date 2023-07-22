@@ -14,7 +14,6 @@ const characterSchema = new Schema({
   },
   classs: {
     type: String,
-
   },
   level: {
     type: Number,
@@ -48,14 +47,8 @@ const characterSchema = new Schema({
   },
   spellbook: [
     {
-      spell: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Spell",
-      },
-      isFavorite: {
-        type: Boolean,
-        default: false,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Spell",
     },
   ],
   contraptions: [
@@ -66,7 +59,7 @@ const characterSchema = new Schema({
   ],
   image: {
     type: String,
-    default: null,
+    default: null, // Permite que el campo sea nulo
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

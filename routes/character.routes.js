@@ -1,14 +1,13 @@
 const express = require("express");
-const router = express.Router();
 const axios = require("axios");
+const router = express.Router();
+
 const Character = require("../models/Character.model");
 const Contraption = require("../models/Contraption.model");
 const User = require("../models/User.model");
 const Spell = require("../models/Spell.model");
-const {
-  isAuthenticated,
-  uploadMiddleware,
-} = require("../middlewares/Token.middleware");
+const { isAuthenticated } = require("../middlewares/Token.middleware");
+const Cloudinary = require("../config/cloudinaryConfig");
 
 // TRAER TODOS LOS PERSONAJES
 router.get("/", isAuthenticated, async (req, res) => {
@@ -44,27 +43,28 @@ router.get("/:id", isAuthenticated, async (req, res) => {
 router.post("/", isAuthenticated, async (req, res) => {
   try {
     const userId = req.payload._id; // Obtener el ID del usuario autenticado
-
     const user = await User.findById(userId); // Buscar el usuario en la base de datos
+    const characterImage = req.body.image;
 
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
+    // @TODO: Subir a cloudinary
+    console.log("characterImage", characterImage);
+    const cloudinaryResult = await Cloudinary.uploader.upload(characterImage);
+
+    console.log("cloudinaryResult", cloudinaryResult);
     const characterData = {
       ...req.body,
-      image: req.file ? req.file.path : null,
-      user: user._id, // Asignar el ID del usuario al personaje
+      image: cloudinaryResult.secure_url,
+      user: user._id,
     };
 
     const character = new Character(characterData);
-
     await character.save();
-
     user.characters = [...user.characters, character._id]; // Agregar el ID del personaje al array de personajes del usuario
-
     await user.save();
-
     return res.status(201).json(character);
   } catch (error) {
     console.log(error);
@@ -125,7 +125,7 @@ router.post(
       }
 
       character.contraptions.push(...contraptions); //puedo padar el idContraption o os IDs de los contraptions en un arreglo y utilizar el spread operator para pasarlos como argumentos individuales
-      console.log("Character updated", character);
+      console.log("Character updated", contraptions);
       await character.save();
 
       const populatedCharacter = await Character.findById(characterId).populate(
@@ -210,7 +210,7 @@ router.post("/:characterId/addSpells", isAuthenticated, async (req, res) => {
         .json({ message: "Uno o más spells no encontrados" });
     }
 
-    character.spellbook.push(...spells);
+    character.spellbook.push(...spellsData);
     console.log("Character updated", character);
     await character.save();
 
@@ -235,16 +235,15 @@ router.delete(
   async (req, res) => {
     try {
       const { characterId, spellId } = req.params;
-
+      console.log(characterId);
+      console.log(spellId);
       const character = await Character.findById(characterId);
+
       if (!character) {
         return res.status(404).json({ message: "Personaje no encontrado" });
       }
 
-      const spellIndex = character.spellbook.findIndex(
-        //POR LA PROPIEDAD ISFAVORITE
-        (item) => item._id.toString() === spellId
-      );
+      const spellIndex = character.spellbook.findById(spellId);
 
       if (spellIndex === -1) {
         return res
@@ -380,55 +379,33 @@ router.put(
 );
 
 module.exports = router;
-// router.post(
-//   "/",
-//   isAuthenticated,
-//   // uploadMiddleware,
-//   async (req, res) => {
-//     //uploadMiddleware porque es el nombre que le he puesto
-//     try {
-//       const { name, userId, level, classs, contraptions, spells } = req.body;
+router.post(
+  "/",
+  isAuthenticated,
+  // uploadMiddleware,
+  async (req, res) => {
+    //uploadMiddleware porque es el nombre que le he puesto
+    try {
+      const { name, userId, level, classs, contraptions, spells } = req.body;
 
-//       // Obtener la ubicación del archivo guardado por Multer
-//       const imagePath = req.file.path;
+      // Obtener la ubicación del archivo guardado por Multer
+      const imagePath = req.file.path;
 
-//       const character = new Character({
-//         name,
-//         user: userId,
-//         level,
-//         classs,
-//         contraptions: contraptions || [],
-//         "spellbook.spells": spells || [],
-//         image: imagePath,
-//       });
+      const character = new Character({
+        name,
+        user: userId,
+        level,
+        classs,
+        contraptions: contraptions || [],
+        "spellbook.spells": spells || [],
+        image: imagePath,
+      });
 
-//       await character.save();
-//       return res.status(201).json(character);
-//     } catch (error) {
-//       console.log(error);
-//       return res.status(500).json({ error: "Error al crear el personaje" });
-//     }
-//   }
-// );
-// CREAR NUEVO PERSONAJE (CON USER)
-// router.post("/", isAuthenticated, async (req, res) => {
-//   try {
-//     const { name, userId, level, classs, contraptions, spells } = req.body;
-//     console.log(req.body);
-//     const character = new Character({
-//       name,
-//       user: userId,
-//       level,
-//       classs,
-//       contraptions: contraptions || [],
-//       "spellbook.spells": spells || [],
-//       image: null,
-//     });
-
-//     await character.save();
-//     return res.status(201).json(character);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ error: "Error al crear el personaje" });
-//   }
-// });
+      await character.save();
+      return res.status(201).json(character);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: "Error al crear el personaje" });
+    }
+  }
+);
