@@ -98,15 +98,14 @@ router.get("/:userId", isAuthenticated, async (req, res, next) => {
     return res.status(500).json({ error: "Error al obtener los personajes" });
   }
 });
-
-// router.get("/characters", isAuthenticated, async (req, res, next) => {
-//   try {
-//     const { userId } = req.body;
-//     const characters = await Character.find({ user: userId });
-//     return res.status(200).json(characters);
-//   } catch (error) {
-//     return res.status(500).json({ error: "Error al obtener los personajes" });
-//   }
-// });
+//CERRAR SESIÓN USUARIO
+router.post("/logout", isAuthenticated, (req, res, next) => {
+  try {
+    req.session.destroy();
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
