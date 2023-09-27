@@ -9,17 +9,7 @@ const contraptionSchema = new Schema(
       type: String,
       required: true,
     },
-    type: {
-      type: String,
-    },
-    DESC: {
-      type: String,
-      maxLength: 250,
-    },
-    isFavorite: {
-      type: Boolean,
-      default: false,
-    },
+    desc: [String],
     done: {
       type: Boolean,
       default: false,
@@ -40,26 +30,9 @@ const contraptionSchema = new Schema(
         ref: "Character",
       },
     ],
-    category_range: {
+    damage_dice: {
       type: String,
     },
-    damage: {
-      damage_dice: {
-        type: String,
-      },
-      damage_type: {
-        index: {
-          type: String,
-        },
-        name: {
-          type: String,
-        },
-        url: {
-          type: String,
-        },
-      },
-    },
-    desc: [String],
     equipment_category: {
       index: {
         type: String,
@@ -71,38 +44,11 @@ const contraptionSchema = new Schema(
         type: String,
       },
     },
+    gear_category_name: {
+
+      type: String,
+    },
     index: {
-      type: String,
-    },
-    properties: [
-      {
-        index: {
-          type: String,
-        },
-        name: {
-          type: String,
-        },
-        url: {
-          type: String,
-        },
-      },
-    ],
-    range: {
-      long: {
-        type: Number,
-      },
-      normal: {
-        type: Number,
-      },
-    },
-    special: [String], // Modificación para incluir la propiedad "special"
-    url: {
-      type: String,
-    },
-    weapon_category: {
-      type: String,
-    },
-    weapon_range: {
       type: String,
     },
     weight: {
@@ -112,9 +58,9 @@ const contraptionSchema = new Schema(
   {
     timestamps: true,
   }
+  
 );
 
 const Contraption = model("Contraption", contraptionSchema);
 
 module.exports = Contraption;
-

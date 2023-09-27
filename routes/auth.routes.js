@@ -42,7 +42,6 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
 
@@ -68,8 +67,6 @@ router.post("/login", (req, res, next) => {
           expiresIn: "6h",
         });
 
-        // req.session.currentUser = foundUser;
-
         res.json({ authToken });
       } else {
         res.status(401).json({ message: "Unable to authenticate the user" });
@@ -79,7 +76,7 @@ router.post("/login", (req, res, next) => {
 });
 
 router.get("/verify", isAuthenticated, (req, res, next) => {
-  console.log("Authenticated user data: ", req.payload);
+
 
   res.status(200).json(req.payload);
 });
@@ -92,20 +89,15 @@ router.get("/:userId", isAuthenticated, async (req, res, next) => {
 
     {
     }
-    console.log(userId);
     return res.status(200).json(characters);
   } catch (error) {
     return res.status(500).json({ error: "Error al obtener los personajes" });
   }
 });
-//CERRAR SESIÓN USUARIO
-router.post("/logout", isAuthenticated, (req, res, next) => {
-  try {
-    req.session.destroy();
-    res.status(200).json({ message: "Logout successful" });
-  } catch (error) {
-    next(error);
-  }
+
+router.post("/logout", isAuthenticated, (req, res) => {
+  res.status(200).json({ message: "Logout successful" });
 });
+
 
 module.exports = router;

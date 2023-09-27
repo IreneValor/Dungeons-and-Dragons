@@ -12,11 +12,6 @@ module.exports = (app) => {
       origin: ["http://localhost:3000", process.env.ORIGIN],
     })
   );
-  // app.use(
-  //   cors({
-  //     origin: [FRONTEND_URL]
-  //   })
-  // );
   app.use(logger("dev"));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));

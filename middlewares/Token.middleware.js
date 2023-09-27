@@ -24,7 +24,7 @@ function getTokenFromHeaders(req) {
   if (authorizationHeader) {
     const [bearer, token] = authorizationHeader.split(" ");
     if (bearer === "Bearer") {
-      console.log("Token: ", token);
+  
       return token;
     }
   }

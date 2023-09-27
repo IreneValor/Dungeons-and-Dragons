@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-const Spell = require("./Spell.model");
-const Contraption = require("./Contraption.model");
-const User = require("./User.model");
+// const Spell = require("./Spell.model");
+// const Contraption = require("./Contraption.model");
+// const User = require("./User.model");
 
 const characterSchema = new Schema({
   name: {
@@ -59,7 +59,7 @@ const characterSchema = new Schema({
   ],
   image: {
     type: String,
-    default: null, // Permite que el campo sea nulo
+    default: null, 
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

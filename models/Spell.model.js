@@ -9,7 +9,7 @@ const spellSchema = new Schema({
   },
   name: {
     type: String,
-    // required: true,
+
   },
   desc: [String],
   higher_level: [String],
@@ -21,7 +21,7 @@ const spellSchema = new Schema({
   casting_time: String,
   level: {
     type: Number,
-    // required: true,
+
   },
   attack_type: String,
   damage: {
@@ -37,13 +37,7 @@ const spellSchema = new Schema({
     name: String,
     url: String,
   },
-  classes: [
-    {
-      index: String,
-      name: String,
-      url: String,
-    },
-  ],
+
   subclasses: [
     {
       index: String,
@@ -56,7 +50,7 @@ const spellSchema = new Schema({
   characters: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Character", // Accede al modelo Character
+      ref: "Character", 
     },
   ],
   isFavorite: {
