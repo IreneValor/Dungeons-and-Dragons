@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-// const Spell = require("./Spell.model");
-// const Contraption = require("./Contraption.model");
-// const User = require("./User.model");
+
 
 const characterSchema = new Schema({
   name: {

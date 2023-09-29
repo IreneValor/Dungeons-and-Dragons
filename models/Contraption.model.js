@@ -16,8 +16,8 @@ const contraptionSchema = new Schema(
     },
     cost: {
       quantity: {
-        type: Number,
-        default: 0,
+        type: String,
+        default: "",
       },
       unit: {
         type: String,
@@ -45,7 +45,6 @@ const contraptionSchema = new Schema(
       },
     },
     gear_category_name: {
-
       type: String,
     },
     index: {
@@ -58,7 +57,6 @@ const contraptionSchema = new Schema(
   {
     timestamps: true,
   }
-  
 );
 
 const Contraption = model("Contraption", contraptionSchema);

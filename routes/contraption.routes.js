@@ -6,7 +6,9 @@ const { isAuthenticated } = require("../middlewares/Token.middleware");
 
 router.get("/", isAuthenticated, async (req, res, next) => {
   try {
-    const clientContraptions = await Contraption.find().populate("characters");
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10; 
+    const startIndex = (page - 1) * perPage;
 
     const syncApiContraptions = async () => {
       const token = req.headers.authorization.split(" ")[1];
@@ -40,7 +42,12 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 
     await syncApiContraptions();
 
-    const allContraptions = await Contraption.find();
+    const allContraptions = await Contraption.find()
+      .skip(startIndex)
+      .limit(perPage)
+      .populate("characters");
+
+    const totalContraptions = await Contraption.countDocuments();
 
     const contraptionsData = allContraptions.map((contraption) => ({
       _id: contraption._id,
@@ -61,11 +68,15 @@ router.get("/", isAuthenticated, async (req, res, next) => {
       weight: contraption.weight,
     }));
 
-    return res.status(200).json(contraptionsData);
+    return res.status(200).json({
+      contraptionsData,
+      totalPages: Math.ceil(totalContraptions / perPage),
+    });
   } catch (error) {
     next(error);
   }
 });
+
 
 router.get("/:id", isAuthenticated, async (req, res, next) => {
   try {
@@ -91,9 +102,12 @@ router.put("/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
     const token = req.headers.authorization.split(" ")[1];
+    console.log("Received PUT request for Contraption with ID:", id);
+    console.log("Request body:", req.body); 
     const contraption = await Contraption.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    console.log("Updated Contraption:", contraption); 
     return res.status(200).json(contraption);
   } catch (error) {
     next(error);

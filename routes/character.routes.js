@@ -65,6 +65,32 @@ router.post("/", isAuthenticated, async (req, res) => {
   }
 });
 
+router.post(
+  "/",
+  isAuthenticated,
+
+  async (req, res) => {
+    try {
+      const { name, userId, level, classs, contraptions, spells } = req.body;
+      const imagePath = req.file.path;
+
+      const character = new Character({
+        name,
+        user: userId,
+        level,
+        classs,
+        contraptions: contraptions || [],
+        "spellbook.spells": spells || [],
+        image: imagePath,
+      });
+
+      await character.save();
+      return res.status(201).json(character);
+    } catch (error) {
+      return res.status(500).json({ error: "Error al crear el personaje" });
+    }
+  }
+);
 router.delete("/:id", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
@@ -121,6 +147,26 @@ router.post(
     }
   }
 );
+router.put("/:id", isAuthenticated, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedCharacterData = req.body; 
+
+    const character = await Character.findByIdAndUpdate(
+      id,
+      updatedCharacterData,
+      { new: true } 
+    );
+
+    if (!character) {
+      return res.status(404).json({ message: "Personaje no encontrado" });
+    }
+
+    return res.status(200).json(character);
+  } catch (error) {
+    return res.status(500).json({ error: "Error al actualizar el personaje" });
+  }
+});
 
 router.delete(
   "/:characterId/removeContraption/:contraptionId",
@@ -207,12 +253,9 @@ router.delete(
         return res.status(404).json({ message: "Personaje no encontrado" });
       }
 
-      
-const spellIndex = character.spellbook.findIndex(
-  (spell) => spell._id.toString() === spellId
-);
-
-      // const spellIndex = character.spellbook.findById(spellId);
+      const spellIndex = character.spellbook.findIndex(
+        (spell) => spell._id.toString() === spellId
+      );
 
       if (spellIndex === -1) {
         return res
@@ -344,29 +387,3 @@ router.put(
 );
 
 module.exports = router;
-router.post(
-  "/",
-  isAuthenticated,
-
-  async (req, res) => {
-    try {
-      const { name, userId, level, classs, contraptions, spells } = req.body;
-      const imagePath = req.file.path;
-
-      const character = new Character({
-        name,
-        user: userId,
-        level,
-        classs,
-        contraptions: contraptions || [],
-        "spellbook.spells": spells || [],
-        image: imagePath,
-      });
-
-      await character.save();
-      return res.status(201).json(character);
-    } catch (error) {
-      return res.status(500).json({ error: "Error al crear el personaje" });
-    }
-  }
-);
