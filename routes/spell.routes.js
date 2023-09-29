@@ -68,6 +68,9 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
+
+
+
 router.get("/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;

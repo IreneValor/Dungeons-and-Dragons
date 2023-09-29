@@ -78,6 +78,20 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 });
 
 
+router.get("/search", isAuthenticated, async (req, res, next) => {
+  try {
+    const { term } = req.query; 
+    const contraptions = await Contraption.find({
+      name: { $regex: new RegExp(term, "i") }, 
+    }).populate("characters");
+
+    return res.status(200).json(contraptions);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 router.get("/:id", isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -97,6 +111,8 @@ router.post("/", isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 router.put("/:id", isAuthenticated, async (req, res, next) => {
   try {
