@@ -36,6 +36,7 @@ router.get("/:id", isAuthenticated, async (req, res) => {
   }
 });
 
+// Crear un nuevo personaje
 router.post("/", isAuthenticated, async (req, res) => {
   try {
     const userId = req.payload._id;
@@ -45,7 +46,6 @@ router.post("/", isAuthenticated, async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
-    y;
 
     const cloudinaryResult = await Cloudinary.uploader.upload(characterImage);
 
