@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for dungeons-and-dragons on 2023-07-22T01:52:50+02:00
+# fly.toml app configuration file generated for dungeons-and-dragons on 2023-09-30T15:52:55+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,6 +7,8 @@ app = "dungeons-and-dragons"
 primary_region = "mad"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
+
+[build]
 
 [[services]]
   protocol = "tcp"
